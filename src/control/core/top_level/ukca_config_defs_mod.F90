@@ -427,6 +427,7 @@ ELSE IF (ukca_config%l_ukca_offline) THEN
 
   IF (ukca_config%l_ukca_offline_ch4) THEN
     n_chem_tracers = 1
+    n_chem_emissions = n_chem_emissions + 1
   ELSE
     n_chem_tracers = 0
   END IF
@@ -442,17 +443,30 @@ ELSE IF (ukca_config%l_ukca_offline) THEN
   nmax_strat_fluxdiags = n_chem_tracers
 
   ! Table refers to emissions, more species may be emitted using surrogates
-  em_chem_spec(1:11) =                                                         &
-  ['BC_fossil ','BC_biofuel','OM_fossil ','OM_biofuel',                        &
-    'Monoterp  ','SO2_low   ','SO2_high  ','DMS       ',                       &
-    'SO2_nat   ','BC_biomass','OM_biomass']
+  IF (ukca_config%l_ukca_offline_ch4) THEN
+    em_chem_spec(1:12) =                                                       &
+    ['CH4       ', 'BC_fossil ','BC_biofuel','OM_fossil ','OM_biofuel',        &
+     'Monoterp  ','SO2_low   ','SO2_high  ','DMS       ',                      &
+     'SO2_nat   ','BC_biomass','OM_biomass']
 
-  ! adding microplastics to em_chem_spec
-  IF (ukca_config%l_ukca_mode .AND. glomap_config%i_mode_setup == 13) THEN
-    em_chem_spec(12) = microplastic_spec(1)
-    em_chem_spec(13) = microplastic_spec(2)
+    ! adding microplastics to em_chem_spec
+    IF (ukca_config%l_ukca_mode .AND. glomap_config%i_mode_setup == 13) THEN
+      em_chem_spec(13) = microplastic_spec(1)
+      em_chem_spec(14) = microplastic_spec(2)
+    END IF
+  ELSE
+    em_chem_spec(1:11) =                                                       &
+    ['BC_fossil ','BC_biofuel','OM_fossil ','OM_biofuel',                      &
+     'Monoterp  ','SO2_low   ','SO2_high  ','DMS       ',                      &
+     'SO2_nat   ','BC_biomass','OM_biomass']
+
+    ! adding microplastics to em_chem_spec
+    IF (ukca_config%l_ukca_mode .AND. glomap_config%i_mode_setup == 13) THEN
+      em_chem_spec(12) = microplastic_spec(1)
+      em_chem_spec(13) = microplastic_spec(2)
+    END IF
   END IF
-
+ 
   ! CRI-Strat and CRI-Strat 2 chemistry
   ! =======================
 ELSE IF (ukca_config%l_ukca_cristrat) THEN
