@@ -121,8 +121,8 @@ CASE ('NO3  ')
 CASE ('O3   ')
   ! No diurnal profile for O3
 
-CASE ('Cl   ', 'O(1D)')
-  ! No diurnal profile for Cl and O(1D), change this later?!?
+CASE ('Cl   ', 'O(1D)', 'JCH4 ')
+  ! No diurnal profile for Cl, O(1D) and JCH4 change this later?!?
       
 CASE DEFAULT
 
@@ -230,8 +230,8 @@ CASE ('NO3  ')
 CASE ('O3   ')
   ! No diurnal profile for O3
 
-CASE ('Cl   ', 'O(1D)')
-  ! No diurnal profile for Cl and O(1D), change this later?!?
+CASE ('Cl   ', 'O(1D)', 'JCH4 ')
+  ! No diurnal profile for Cl, O(1D) and JCH4 change this later?!?
    
 CASE DEFAULT
 
