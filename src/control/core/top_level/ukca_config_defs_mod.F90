@@ -424,8 +424,13 @@ ELSE IF (ukca_config%l_ukca_offline) THEN
   n_chem_emissions = 8     ! 2D emission fields
   n_3d_emissions = 3       ! SO2_nat, BC & OC biomass
   n_aero_tracers = 7       ! DMS, SO2... aerosol precursor species
-  n_chem_tracers = 0
 
+  IF (ukca_config%l_ukca_offline_ch4) THEN
+    n_chem_tracers = 1
+  ELSE
+    n_chem_tracers = 0
+  END IF
+ 
   ! add extra allocation for microplastics
   IF (ukca_config%l_ukca_mode .AND. glomap_config%i_mode_setup == 13) THEN
     n_chem_emissions = n_chem_emissions + 2

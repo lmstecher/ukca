@@ -104,7 +104,7 @@ INTEGER, PARAMETER :: rm = 1024   ! Used to remove reactions that existed at
 INTEGER, PARAMETER :: olch4 = 2048 ! Include methane loss on offline oxidants scheme
 
 ! Define size of master chemistry
-INTEGER, PARAMETER :: n_chch_master = 357 ! number of known species
+INTEGER, PARAMETER :: n_chch_master = 358 ! number of known species
 INTEGER, PARAMETER :: n_het_master  =  18 ! number of heterogeneous reactions
 INTEGER, PARAMETER :: n_dry_master  = 162 ! number of dry deposition reactions
 INTEGER, PARAMETER :: n_wet_master  = 160 ! number of wet deposition reactions
@@ -175,7 +175,7 @@ IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
 ! dry deposition flag, wet deposition flag, scheme,
 ! selection qualifier, deselection / disqualifier, (UM) version when entered
 ! into the master mechanism.
-chch_defs_master(1:149)=[                                                      &
+chch_defs_master(1:150)=[                                                      &
 !   1
 chch_t1( 1,'O(3P)     ',1,'TR        ','Ox        ',0,0,s+st+cs,0,0,107),      &
 !   1
@@ -239,6 +239,8 @@ chch_t1(12,'CH4       ',1,'TR        ','          ',0,0,s+cs,ce,0,107),        &
 !  12 DD:  9,
 ! Dry deposition of CH4 enabled in TI, T, ST and R schemes.
 chch_t1(12,'CH4       ',1,'TR        ','          ',1,0,ti+t+st+r,ce,0,107),   &
+! Dry deposition of CH4 currently disabled in offline oxidants scheme.
+chch_t1(12,'CH4       ',1,'TR        ','          ',0,0,ol,olch4,0,107),       &
 !  13 DD: 10,
 chch_t1(13,'CO        ',1,'TR        ','          ',1,0,ti+s+t+st+r+cs,        &
                                                                 0,0,107),      &
@@ -499,7 +501,7 @@ chch_t1(92,'HO2S      ',1,'SS        ','          ',0,1,t,0,0,107)             &
 
 
 ! Species definitions continued
-chch_defs_master(150:244)=[                                                    &
+chch_defs_master(151:245)=[                                                    &
 !  93
 chch_t1(93,'s-BuOO    ',1,'SS        ','          ',0,0,r,0,0,107),            &
 !  94
@@ -694,7 +696,7 @@ chch_t1(181,'RU10OOH   ',1,'TR        ','          ',1,1,cs,0,0,107)           &
 ]
 
 
-chch_defs_master(245:n_chch_master)=[                                          &
+chch_defs_master(246:n_chch_master)=[                                          &
 ! 182 DD: 94,WD: 69,
 chch_t1(182,'NRU14OOH  ',1,'TR        ','          ',1,1,cs,0,0,107),          &
 ! 183 DD: 95,WD: 70,
