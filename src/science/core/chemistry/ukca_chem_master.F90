@@ -101,6 +101,7 @@ INTEGER, PARAMETER :: ce = 512    ! CH4 emission-driven chemistry
 INTEGER, PARAMETER :: rm = 1024   ! Used to remove reactions that existed at
                                   ! previous chemistry versions but not at
                                   ! later ones
+INTEGER, PARAMETER :: olch4 = 2048 ! Include methane loss on offline oxidants scheme
 
 ! Define size of master chemistry
 INTEGER, PARAMETER :: n_chch_master = 357 ! number of known species
@@ -8402,6 +8403,9 @@ IF (ukca_config%l_ukca_emsdrvn_ch4) qualifier = qualifier + ce
 ! (dis)qualifier to remove reactions used in previous chemistry versions
 ! introduced at version 121.
 IF (ukca_config%i_ukca_chem_version >= 121) qualifier = qualifier + rm
+
+! Qualifier for adding methane loss in offline oxidant scheme
+IF (ukca_config%l_ukca_offline_ch4) qualifier = qualifier + olch4
 
 WRITE (umMessage,'(A,1X,I9)') 'UKCA_CHEM_MASTER: qualifier = ',qualifier
 CALL umPrint(umMessage,src=RoutineName)
