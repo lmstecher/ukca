@@ -104,11 +104,11 @@ INTEGER, PARAMETER :: rm = 1024   ! Used to remove reactions that existed at
 INTEGER, PARAMETER :: olch4 = 2048 ! Include methane loss on offline oxidants scheme
 
 ! Define size of master chemistry
-INTEGER, PARAMETER :: n_chch_master = 358 ! number of known species
+INTEGER, PARAMETER :: n_chch_master = 360 ! number of known species
 INTEGER, PARAMETER :: n_het_master  =  18 ! number of heterogeneous reactions
 INTEGER, PARAMETER :: n_dry_master  = 162 ! number of dry deposition reactions
 INTEGER, PARAMETER :: n_wet_master  = 160 ! number of wet deposition reactions
-INTEGER, PARAMETER :: n_bimol_master = 1212 ! number of bimolecular reactions
+INTEGER, PARAMETER :: n_bimol_master = 1220 ! number of bimolecular reactions
 INTEGER, PARAMETER :: n_ratj_master = 183 ! number of photolysis reactions
 INTEGER, PARAMETER :: n_ratt_master = 116 ! number of termolecular reactions
 
@@ -175,7 +175,7 @@ IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
 ! dry deposition flag, wet deposition flag, scheme,
 ! selection qualifier, deselection / disqualifier, (UM) version when entered
 ! into the master mechanism.
-chch_defs_master(1:150)=[                                                      &
+chch_defs_master(1:152)=[                                                      &
 !   1
 chch_t1( 1,'O(3P)     ',1,'TR        ','Ox        ',0,0,s+st+cs,0,0,107),      &
 !   1
@@ -183,6 +183,8 @@ chch_t1( 1,'O(3P)     ',1,'SS        ','Ox        ',0,0,ti+t+r,0,0,107),       &
 !   2
 chch_t1( 2,'O(1D)     ',1,'SS        ','Ox        ',0,0,ti+s+t+st+r+cs,        &
                                                                 0,0,107),      &
+!   2
+chch_t1( 2,'O(1D)     ',1,'CF        ','Ox        ',0,0,ol,olch4,0,107),       &
 !   3 DD:  1,
 chch_t1( 3,'O3        ',1,'TR        ','Ox        ',1,0,ti+s+t+st+r+cs,        &
                                                                 0,a,107),      &
@@ -275,6 +277,8 @@ chch_t1(20,'HO2       ',1,'SS        ','HOx       ',0,1,t+r,0,0,107),          &
 chch_t1(20,'HO2       ',1,'CF        ','HOx       ',0,0,ol,0,0,107),           &
 !  21
 chch_t1(21,'Cl        ',1,'TR        ','Clx       ',0,0,s+st+cs,0,0,107),      &
+!  21
+chch_t1(21,'Cl        ',1,'CF        ','Clx       ',0,0,ol,olch4,0,107),       &
 !  22
 chch_t1(22,'Cl2O2     ',1,'TR        ','Clx       ',0,0,s+st+cs,0,0,107),      &
 !  23
@@ -501,7 +505,7 @@ chch_t1(92,'HO2S      ',1,'SS        ','          ',0,1,t,0,0,107)             &
 
 
 ! Species definitions continued
-chch_defs_master(151:245)=[                                                    &
+chch_defs_master(153:247)=[                                                    &
 !  93
 chch_t1(93,'s-BuOO    ',1,'SS        ','          ',0,0,r,0,0,107),            &
 !  94
@@ -696,7 +700,7 @@ chch_t1(181,'RU10OOH   ',1,'TR        ','          ',1,1,cs,0,0,107)           &
 ]
 
 
-chch_defs_master(246:n_chch_master)=[                                          &
+chch_defs_master(248:n_chch_master)=[                                          &
 ! 182 DD: 94,WD: 69,
 chch_t1(182,'NRU14OOH  ',1,'TR        ','          ',1,1,cs,0,0,107),          &
 ! 183 DD: 95,WD: 70,
@@ -2515,7 +2519,7 @@ wetdep(121, 'SEC_ORG_I ',                                                      &
 ! Start and end bounds for 1st section of ratb_defs.
 ! If you add extra reactions to this section, increment n_ratb_e
 n_ratb_s = 1
-n_ratb_e = n_ratb_s+55
+n_ratb_e = n_ratb_s+58
 
 ! Item number, reactants x2, products x4, Arrhenius coefficients (k0, alpha
 ! and beta), fractional production rates x4, chemistry scheme, qualifier,
@@ -2602,11 +2606,17 @@ ratb_t1(15,'CFCl3     ','O(1D)     ','Cl        ','Cl        ','ClO       ',   &
 ! B016 JPL2011
 ratb_t1(16,'Cl        ','CH4       ','HCl       ','MeOO      ','          ',   &
 '          ',7.30e-12,  0.00, 1280.00, 0.00, 0.00, 0.00, 0.00,st+cs,0,0,107),  &
+! B016 JPL2011 - olch4 same as st
+ratb_t1(16,'Cl        ','CH4       ','          ','          ','          ',   &
+'          ',7.30e-12,  0.00, 1280.00, 0.00, 0.00, 0.00, 0.00,ol,olch4,0,107), &
 ratb_t1(16,'Cl        ','CH4       ','HCl       ','MeOO      ','          ',   &
 '          ',6.60e-12,  0.00, 1240.00, 0.00, 0.00, 0.00, 0.00,s,0,0,107),      &
 ! updates for 121 - do for s, st, & cs
 ratb_t1(16,'Cl        ','CH4       ','HCl       ','MeOO      ','          ',   &
 '          ',7.10e-12,  0.00, 1270.00, 0.00, 0.00, 0.00, 0.00,s+st+cs,0,0,121),&
+! updates for 121 - do for olch4 same as st
+ratb_t1(16,'Cl        ','CH4       ','          ','          ','          ',   &
+'          ',7.10e-12,  0.00, 1270.00, 0.00, 0.00, 0.00, 0.00,ol,olch4,0,121), &
 ! B017 IUPAC2006
 ratb_t1(17,'Cl        ','Cl2O2     ','Cl        ','Cl        ','Cl        ',   &
 '          ',7.60e-11,  0.00,  -65.00, 0.00, 0.00, 0.00, 0.00,st+cs,0,0,107),  &
@@ -3097,7 +3107,7 @@ ratb_t1(90,'NO        ','NO3       ','NO2       ','NO2       ','          ',   &
 ! Start and end bounds for 4th section of ratb_defs.
 ! If you add extra reactions to this section, increment n_ratb_e
 n_ratb_s = n_ratb_e+1
-n_ratb_e = n_ratb_s+69
+n_ratb_e = n_ratb_s+74
 ratb_defs_master(n_ratb_s:n_ratb_e) = [                                        &
 ratb_t1(90,'NO        ','NO3       ','NO2       ','NO2       ','          ',   &
 '          ',1.80e-11,  0.00, -110.00, 0.00, 0.00,0.00,0.00,ti+t+s+cs,0,0,107),&
@@ -3187,9 +3197,15 @@ ratb_t1(100,'NO3       ','MeCHO     ','HONO2     ','MeCO3     ','          ',  &
 ! B101 JPL2011
 ratb_t1(101,'O(1D)     ','CH4       ','HCHO      ','H2        ','          ',  &
 '          ',9.00e-12,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,st+cs,0,0,107),  &
+! B101 JPL2011 - olch4 same as st
+ratb_t1(101,'O(1D)     ','CH4       ','          ','          ','          ',  &
+'          ',9.00e-12,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,ol,olch4,0,107), &
 ! updates for 121 - st & cs
 ratb_t1(101,'O(1D)     ','CH4       ','HCHO      ','H2        ','          ',  &
 '          ',8.75e-12,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,st+cs,0,0,121),  &
+! updates for 121 - olch4 same as st
+ratb_t1(101,'O(1D)     ','CH4       ','          ','          ','          ',  &
+'          ',8.75e-12,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,ol,olch4,0,121), &
 ratb_t1(101,'O(1D)     ','CH4       ','HCHO      ','H2        ','          ',  &
 '          ',7.50e-12,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,ti+t,0,0,107),   &
 ratb_t1(101,'O(1D)     ','CH4       ','HCHO      ','H2        ','          ',  &
@@ -3197,12 +3213,21 @@ ratb_t1(101,'O(1D)     ','CH4       ','HCHO      ','H2        ','          ',  &
 ! B102 JPL2011
 ratb_t1(102,'O(1D)     ','CH4       ','HCHO      ','HO2       ','HO2       ',  &
 '          ',3.45e-11,  0.00,    0.00, 0.00,0.00,0.00,0.00,ti+t+st+cs,0,0,107),&
+! B102 JPL2011 - olch4 same as st
+ratb_t1(102,'O(1D)     ','CH4       ','          ','          ','          ',  &
+'          ',3.45e-11,  0.00,    0.00, 0.00,0.00,0.00,0.00,ol,olch4,0,107),    &
 ! updates for 121 - st & cs only
 ratb_t1(102,'O(1D)     ','CH4       ','HCHO      ','HO2       ','HO2       ',  &
 '          ',3.50e-11,  0.00,    0.00, 0.00,0.00,0.00,0.00,st+cs,0,0,121),     &
+! updates for 121 - olch4 same as st
+ratb_t1(102,'O(1D)     ','CH4       ','HCHO      ','          ','          ',  &
+'          ',3.50e-11,  0.00,    0.00, 0.00,0.00,0.00,0.00,ol,olch4,0,121),    &
 ! B103 JPL2011
 ratb_t1(103,'O(1D)     ','CH4       ','OH        ','MeOO      ','          ',  &
 '          ',1.31e-10,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,st+cs,0,0,107),  &
+! olch4 same as st
+ratb_t1(103,'O(1D)     ','CH4       ','          ','          ','          ',  &
+'          ',1.31e-10,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,ol,olch4,0,107), &
 ratb_t1(103,'O(1D)     ','CH4       ','OH        ','MeOO      ','          ',  &
 '          ',1.35e-10,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,s,0,0,107),      &
 ratb_t1(103,'O(1D)     ','CH4       ','OH        ','MeOO      ','          ',  &
@@ -3492,6 +3517,9 @@ ratb_t1(145,'OH        ','CH4       ','H2O       ','MeOO      ','          ',  &
 '          ',2.45e-12,  0.00, 1775.00, 0.00, 0.00, 0.00, 0.00,st+r,0,0,107),   &
 ratb_t1(145,'OH        ','CH4       ','H2O       ','MeOO      ','          ',  &
 '          ',1.85e-12,  0.00, 1690.00, 0.00, 0.00,0.00,0.00,ti+s+t+cs,0,0,107),&
+! B145 JPL2011 - olch4 same as st
+ratb_t1(145,'OH        ','CH4       ','          ','          ','          ',  &
+'          ',2.45e-12,  0.00, 1775.00, 0.00, 0.00, 0.00, 0.00,ol,olch4,0,107), &
 ! B146 IUPAC2005 see also asad_bimol
 ratb_t1(146,'OH        ','CO        ','HO2       ','          ','          ',  &
 '          ',1.44e-13,  0.00,    0.00, 0.0, 0.0,0.0,0.0,ti+t+st+r+cs,0,0,107), &

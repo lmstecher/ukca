@@ -90,8 +90,8 @@ CHARACTER(LEN=*), PARAMETER :: RoutineName='UKCA_SET_DIURNAL_OX'
 
 IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
 
-SELECT CASE(species(1:4))
-CASE ('OH  ','HO2 ')
+SELECT CASE(species(1:5))
+CASE ('OH   ','HO2  ')
 
   ! Scale the field according to cos(zenith angle)/integral(cos(zenith_angle))
   ! Night time values are zero
@@ -101,7 +101,7 @@ CASE ('OH  ','HO2 ')
     field(:) = 0.0
   END WHERE
 
-CASE ('NO3 ')
+CASE ('NO3  ')
 
   ! convert from radians to seconds
   daylen_secs = daylength1d*rsec_per_day/(2.0*pi)
@@ -117,9 +117,12 @@ CASE ('NO3 ')
     field(:) = 0.0
   END WHERE
 
-CASE ('O3  ')
+CASE ('O3   ')
   ! No diurnal profile for O3
 
+CASE ('Cl   ', 'O(1D)')
+  ! No diurnal profile for Cl and O(1D), change this later?!?
+      
 CASE DEFAULT
 
   cmessage = 'ukca_set_diurnal_ox: Species: '//species//' not found'
@@ -193,8 +196,8 @@ IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
 ! get mapping from theta_field to proper x*y. Field is 1 column here!
 location = ix + ((jy - 1)*ukca_config%row_length)
 
-SELECT CASE(species(1:4))
-CASE ('OH  ','HO2 ')
+SELECT CASE(species(1:5))
+CASE ('OH   ','HO2  ')
 
   ! Scale the field according to cos(zenith angle)/integral(cos(zenith_angle))
   ! Night time values are zero
@@ -204,7 +207,7 @@ CASE ('OH  ','HO2 ')
     field(:) = 0.0
   END IF
 
-CASE ('NO3 ')
+CASE ('NO3  ')
 
   ! convert from radians to seconds
   daylen_secs = daylength1d(location)*rsec_per_day / (2.0*pi)
@@ -218,9 +221,12 @@ CASE ('NO3 ')
     field(:) = 0.0
   END IF
 
-CASE ('O3  ')
+CASE ('O3   ')
   ! No diurnal profile for O3
 
+CASE ('Cl   ', 'O(1D)')
+  ! No diurnal profile for Cl and O(1D), change this later?!?
+   
 CASE DEFAULT
 
   cmessage = 'ukca_set_diurnal_ox: Species: '//species//' not found'
