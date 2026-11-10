@@ -64,7 +64,8 @@ SUBROUTINE ukca_set_diurnal_ox(species, field, n_points, nlev)
 
 USE ukca_chem_offline,        ONLY: o3_offline_diag, oh_offline_diag,          &
                                     no3_offline_diag, ho2_offline_diag,        &
-                                    cl_offline_diag, o1d_offline_diag
+                                    cl_offline_diag, o1d_offline_diag,         &
+                                    jch4_offline_diag
 USE ukca_constants,           ONLY: rsec_per_day, pi
 USE ereport_mod,              ONLY: ereport
 
@@ -151,6 +152,8 @@ CASE ('Cl   ')
   cl_offline_diag(:,nlev) = field(:)
 CASE ('O(1D)')
   o1d_offline_diag(:,nlev) = field(:)
+CASE ('JCH4 ')
+  jch4_offline_diag(:,nlev) = field(:)
 END SELECT
 
 IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
@@ -168,7 +171,8 @@ SUBROUTINE ukca_set_diurnal_ox_col(species, field, n_points, ix, jy)
 USE ukca_config_specification_mod, ONLY: ukca_config
 USE ukca_chem_offline,      ONLY: o3_offline_diag, oh_offline_diag,            &
                                   no3_offline_diag, ho2_offline_diag,          &
-                                  cl_offline_diag, o1d_offline_diag
+                                  cl_offline_diag, o1d_offline_diag,           &
+                                  jch4_offline_diag
 USE ukca_constants,         ONLY: rsec_per_day, pi
 USE ereport_mod,            ONLY: ereport
 
@@ -260,6 +264,8 @@ CASE ('Cl   ')
   cl_offline_diag(location,:) = field(:)
 CASE ('O(1D)')
   o1d_offline_diag(location,:) = field(:)
+CASE ('JCH4 ')
+  jch4_offline_diag(location,:) = field(:)
 END SELECT
 
 IF (lhook) CALL dr_hook(ModuleName//':'//RoutineName,zhook_out,zhook_handle)
