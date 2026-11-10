@@ -106,7 +106,7 @@ INTEGER, PARAMETER :: olch4 = 2048 ! Include methane loss on offline oxidants sc
 ! Define size of master chemistry
 INTEGER, PARAMETER :: n_chch_master = 360 ! number of known species
 INTEGER, PARAMETER :: n_het_master  =  18 ! number of heterogeneous reactions
-INTEGER, PARAMETER :: n_dry_master  = 162 ! number of dry deposition reactions
+INTEGER, PARAMETER :: n_dry_master  = 163 ! number of dry deposition reactions
 INTEGER, PARAMETER :: n_wet_master  = 160 ! number of wet deposition reactions
 INTEGER, PARAMETER :: n_bimol_master = 1220 ! number of bimolecular reactions
 INTEGER, PARAMETER :: n_ratj_master = 183 ! number of photolysis reactions
@@ -241,8 +241,8 @@ chch_t1(12,'CH4       ',1,'TR        ','          ',0,0,s+cs,ce,0,107),        &
 !  12 DD:  9,
 ! Dry deposition of CH4 enabled in TI, T, ST and R schemes.
 chch_t1(12,'CH4       ',1,'TR        ','          ',1,0,ti+t+st+r,ce,0,107),   &
-! Dry deposition of CH4 currently disabled in offline oxidants scheme.
-chch_t1(12,'CH4       ',1,'TR        ','          ',0,0,ol,olch4,0,107),       &
+! Dry deposition of CH4 enabled in offline oxidants scheme with methane loss.
+chch_t1(12,'CH4       ',1,'TR        ','          ',1,0,ol,olch4,0,107),       &
 !  13 DD: 10,
 chch_t1(13,'CO        ',1,'TR        ','          ',1,0,ti+s+t+st+r+cs,        &
                                                                 0,0,107),      &
@@ -2607,7 +2607,7 @@ ratb_t1(15,'CFCl3     ','O(1D)     ','Cl        ','Cl        ','ClO       ',   &
 ratb_t1(16,'Cl        ','CH4       ','HCl       ','MeOO      ','          ',   &
 '          ',7.30e-12,  0.00, 1280.00, 0.00, 0.00, 0.00, 0.00,st+cs,0,0,107),  &
 ! B016 JPL2011 - olch4 same as st
-ratb_t1(16,'Cl        ','CH4       ','          ','          ','          ',   &
+ratb_t1(16,'Cl        ','CH4       ','NULL3     ','          ','          ',   &
 '          ',7.30e-12,  0.00, 1280.00, 0.00, 0.00, 0.00, 0.00,ol,olch4,0,107), &
 ratb_t1(16,'Cl        ','CH4       ','HCl       ','MeOO      ','          ',   &
 '          ',6.60e-12,  0.00, 1240.00, 0.00, 0.00, 0.00, 0.00,s,0,0,107),      &
@@ -2615,7 +2615,7 @@ ratb_t1(16,'Cl        ','CH4       ','HCl       ','MeOO      ','          ',   &
 ratb_t1(16,'Cl        ','CH4       ','HCl       ','MeOO      ','          ',   &
 '          ',7.10e-12,  0.00, 1270.00, 0.00, 0.00, 0.00, 0.00,s+st+cs,0,0,121),&
 ! updates for 121 - do for olch4 same as st
-ratb_t1(16,'Cl        ','CH4       ','          ','          ','          ',   &
+ratb_t1(16,'Cl        ','CH4       ','NULL3     ','          ','          ',   &
 '          ',7.10e-12,  0.00, 1270.00, 0.00, 0.00, 0.00, 0.00,ol,olch4,0,121), &
 ! B017 IUPAC2006
 ratb_t1(17,'Cl        ','Cl2O2     ','Cl        ','Cl        ','Cl        ',   &
@@ -3198,13 +3198,13 @@ ratb_t1(100,'NO3       ','MeCHO     ','HONO2     ','MeCO3     ','          ',  &
 ratb_t1(101,'O(1D)     ','CH4       ','HCHO      ','H2        ','          ',  &
 '          ',9.00e-12,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,st+cs,0,0,107),  &
 ! B101 JPL2011 - olch4 same as st
-ratb_t1(101,'O(1D)     ','CH4       ','          ','          ','          ',  &
+ratb_t1(101,'O(1D)     ','CH4       ','NULL4     ','          ','          ',  &
 '          ',9.00e-12,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,ol,olch4,0,107), &
 ! updates for 121 - st & cs
 ratb_t1(101,'O(1D)     ','CH4       ','HCHO      ','H2        ','          ',  &
 '          ',8.75e-12,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,st+cs,0,0,121),  &
 ! updates for 121 - olch4 same as st
-ratb_t1(101,'O(1D)     ','CH4       ','          ','          ','          ',  &
+ratb_t1(101,'O(1D)     ','CH4       ','NULL4     ','          ','          ',  &
 '          ',8.75e-12,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,ol,olch4,0,121), &
 ratb_t1(101,'O(1D)     ','CH4       ','HCHO      ','H2        ','          ',  &
 '          ',7.50e-12,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,ti+t,0,0,107),   &
@@ -3214,19 +3214,19 @@ ratb_t1(101,'O(1D)     ','CH4       ','HCHO      ','H2        ','          ',  &
 ratb_t1(102,'O(1D)     ','CH4       ','HCHO      ','HO2       ','HO2       ',  &
 '          ',3.45e-11,  0.00,    0.00, 0.00,0.00,0.00,0.00,ti+t+st+cs,0,0,107),&
 ! B102 JPL2011 - olch4 same as st
-ratb_t1(102,'O(1D)     ','CH4       ','          ','          ','          ',  &
+ratb_t1(102,'O(1D)     ','CH4       ','NULL4     ','          ','          ',  &
 '          ',3.45e-11,  0.00,    0.00, 0.00,0.00,0.00,0.00,ol,olch4,0,107),    &
 ! updates for 121 - st & cs only
 ratb_t1(102,'O(1D)     ','CH4       ','HCHO      ','HO2       ','HO2       ',  &
 '          ',3.50e-11,  0.00,    0.00, 0.00,0.00,0.00,0.00,st+cs,0,0,121),     &
 ! updates for 121 - olch4 same as st
-ratb_t1(102,'O(1D)     ','CH4       ','HCHO      ','          ','          ',  &
+ratb_t1(102,'O(1D)     ','CH4       ','NULL4     ','          ','          ',  &
 '          ',3.50e-11,  0.00,    0.00, 0.00,0.00,0.00,0.00,ol,olch4,0,121),    &
 ! B103 JPL2011
 ratb_t1(103,'O(1D)     ','CH4       ','OH        ','MeOO      ','          ',  &
 '          ',1.31e-10,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,st+cs,0,0,107),  &
 ! olch4 same as st
-ratb_t1(103,'O(1D)     ','CH4       ','          ','          ','          ',  &
+ratb_t1(103,'O(1D)     ','CH4       ','NULL4     ','          ','          ',  &
 '          ',1.31e-10,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,ol,olch4,0,107), &
 ratb_t1(103,'O(1D)     ','CH4       ','OH        ','MeOO      ','          ',  &
 '          ',1.35e-10,  0.00,    0.00, 0.00, 0.00, 0.00, 0.00,s,0,0,107),      &
@@ -3518,7 +3518,7 @@ ratb_t1(145,'OH        ','CH4       ','H2O       ','MeOO      ','          ',  &
 ratb_t1(145,'OH        ','CH4       ','H2O       ','MeOO      ','          ',  &
 '          ',1.85e-12,  0.00, 1690.00, 0.00, 0.00,0.00,0.00,ti+s+t+cs,0,0,107),&
 ! B145 JPL2011 - olch4 same as st
-ratb_t1(145,'OH        ','CH4       ','          ','          ','          ',  &
+ratb_t1(145,'OH        ','CH4       ','NULL5     ','          ','          ',  &
 '          ',2.45e-12,  0.00, 1775.00, 0.00, 0.00, 0.00, 0.00,ol,olch4,0,107), &
 ! B146 IUPAC2005 see also asad_bimol
 ratb_t1(146,'OH        ','CO        ','HO2       ','          ','          ',  &
@@ -7044,7 +7044,7 @@ ratb_t1(745,'HO2       ','EtCO3     ','OH        ','EtOO      ','CO2       ',  &
 ! Split to avoid warning "Too many continuation lines"
 ! 1
 ! R and T are at older revision than S and ST. Make consistent
-depvel_defs_master(1:29) = [                                                   &
+depvel_defs_master(1:30) = [                                                   &
 depvel_t(1,'O3        ',& ! (Ganzeveld & Lelieveld (1995) note 1)
                           ! (modified to be the same as Guang version)
 [0.05,  0.05,  0.05,  0.05,  0.05,  0.05,&   ! DD:  1.1
@@ -7155,6 +7155,14 @@ depvel_t(13,'CH4       ',                                                      &
   0.00,  0.00,  0.00,  0.00,  0.00,  0.00,&   ! DD:  9.4
   0.00,  0.00,  0.00,  0.00,  0.00,  0.00],& ! DD:  9.5
   ti+t+st+r,0,0,107),                                                          &
+! 13
+depvel_t(13,'CH4       ',                                                      &
+[0.00,  0.00,  0.00,  0.00,  0.00,  0.00,&   ! DD:  9.1
+  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,&   ! DD:  9.2
+  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,&   ! DD:  9.3
+  0.00,  0.00,  0.00,  0.00,  0.00,  0.00,&   ! DD:  9.4
+  0.00,  0.00,  0.00,  0.00,  0.00,  0.00],& ! DD:  9.5
+  ol,olch4,0,107),                                                             &
 ! 14
 depvel_t(14,'CO        ',& ! (see Giannokopoulos (1998))
 [0.00,  0.00,  0.00,  0.00,  0.00,  0.00,&   ! DD: 10.1
@@ -7288,7 +7296,7 @@ depvel_t(29,'EtCHO     ',& ! (as MeCHO)
   ti+t+st+cs,0,0,107) ]
 
 ! Split to avoid warning "Too many continuation lines"
-depvel_defs_master(30:59) = [                                                  &
+depvel_defs_master(31:60) = [                                                  &
 ! 30
 depvel_t(30,'MeCOCH2OOH',& !(as MeCO3H - where do the desert data come from!?)
 [0.36,  0.36,  0.36,  0.19,  0.19,  0.19,&   ! DD: 24.1
@@ -7536,7 +7544,7 @@ depvel_t(59,'BPINENE   ',                                                      &
   cs,0,0,107)                                                                  &
 ]
 
-depvel_defs_master(60:89) = [                                                  &
+depvel_defs_master(61:90) = [                                                  &
 !  60 EtOH  Using MeOH DD rates
 depvel_t(60,'EtOH      ',                                                      &
 [0.25,  0.25,  0.25,  0.10,  0.10,  0.10,&   ! DD: 52.1
@@ -8048,7 +8056,7 @@ depvel_t(122,'RTN23OOH  ',                                                     &
 ]
 
 ! Dry deposition continued
-depvel_defs_master(123:150) = [                                                &
+depvel_defs_master(124:151) = [                                                &
 !  123 RTN14OOH  Using EtOOH DD rates
 depvel_t(123,'RTN14OOH  ',                                                     &
 [0.25,  0.25,  0.25,  0.10,  0.10,  0.10,&   ! DD:112.1
@@ -8275,7 +8283,7 @@ depvel_t(150,'AROH17    ',                                                     &
   cs,0,0,107)                                                                  &
   ]
 
-depvel_defs_master(151:n_dry_master) = [                                       &
+depvel_defs_master(152:n_dry_master) = [                                       &
 !  151 ARNOH17  Using MeOH DD rates
 depvel_t(151,'ARNOH17   ',                                                     &
 [0.25,  0.25,  0.25,  0.10,  0.10,  0.10,&   ! DD:140.1
